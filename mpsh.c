@@ -8,9 +8,8 @@ int has_config_file ()
     char *path = getenv("HOME");
     char *config_name = "/.mpshrc";
     char *absolute_path_config = malloc(strlen(path) + strlen(config_name) + 1);
-    strncpy(absolute_path_config, path, strlen(path) + 1);
-    strncat(absolute_path_config, config_name, strlen(config_name) + 1);
-
+    sprintf (absolute_path_config, "%s%s", path, config_name);
+    
     /* Tentative d'ouverture du fichier de configuration */
     FILE* config = fopen(absolute_path_config, "r");
     free(absolute_path_config);

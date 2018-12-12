@@ -1,6 +1,6 @@
-C=gcc
-CFLAGS=-Wall -g -std=c11
-LDLIBS= -lm
+C = gcc
+CFLAGS = -Wall -g -std=c11
+LDLIBS = -lm
 ALL = mpsh
 
 all :	$(ALL)
