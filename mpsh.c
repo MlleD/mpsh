@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include <dirent.h>
 #include <unistd.h>
 #include <errno.h>
 
-#define ARG_MAX 2097152
+#define MAX_ARGS_LENGTH 2097152
+#define MAX_ARGS 10
 #define MAX_LINE_LENGTH 100
 
 int has_config_file ()
@@ -50,13 +52,11 @@ void ls (char *path)
     printf("\n");
 }
 
-int process_command (char *word1, char *word2)
+int process_command (char * cmdargs[])
 {
-    if (strncmp(word1, "ls", 2) == 0) {
-        if (word2[0] == '\0') {
-            sprintf(word2, "%s", ".");
-        }
-        ls (word2);
+    if (strncmp(cmdargs[0], "ls", 2) == 0) {
+        char* dir = *cmdargs[1] != '\0' ? cmdargs[1] : ".";
+        ls (dir);
         return 0;
     }
     else {
@@ -64,7 +64,7 @@ int process_command (char *word1, char *word2)
         return 1;
     }
 }
-
+#include <ctype.h>
 int main (int argc, char const *argv[])
 {
     if (has_config_file()) {
@@ -73,12 +73,14 @@ int main (int argc, char const *argv[])
     else {
         printf("Le fichier de config n'existe pas.\n");
     }
-    char input[ARG_MAX];
-    char word1 [ARG_MAX/2], word2[ARG_MAX/2];
+    char input[MAX_ARGS];
+    char* cmd_args[MAX_ARGS]; 
+    for (int i = 0; i < MAX_ARGS;i++) cmd_args[i] = malloc(8);
     while (1) {
-        fgets(input, ARG_MAX, stdin);
-        sscanf(input, "%s %s", word1, word2);
-        if (process_command(word1, word2) == 1) return 1;
+        fgets(input, MAX_ARGS, stdin);
+        sscanf(input, "%s %s %s %s", cmd_args[0], cmd_args[1], cmd_args[2], cmd_args[3]);
+        if (process_command(cmd_args) == 1) return 1;
     }
+    for (int i = 0; i < MAX_ARGS;i++) free(cmd_args[i]);
     return 0;
 }
