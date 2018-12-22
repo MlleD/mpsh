@@ -5,6 +5,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <errno.h>
+#include <ctype.h>
 
 #define MAX_ARGS_LENGTH 2097152
 #define MAX_ARGS 10
@@ -26,12 +27,12 @@ int has_config_file ()
     return (config != NULL);
 }
 
-void ls (char *path)
+int ls (char *path)
 {
     DIR* dir = opendir(path);
     if (dir == NULL) {
         perror("Error ls");
-        return;
+        return 1;
     }
     struct dirent* direntry;
     size_t current_line_length = 0;
@@ -50,21 +51,22 @@ void ls (char *path)
         }
     }
     printf("\n");
+    return 0;
 }
 
 int process_command (char * cmdargs[])
 {
     if (strncmp(cmdargs[0], "ls", 2) == 0) {
         char* dir = *cmdargs[1] != '\0' ? cmdargs[1] : ".";
-        ls (dir);
-        return 0;
+        if (ls (dir) == 1) return 1;
+        else return 0;
     }
     else {
         fprintf(stderr, "Unknown command\n");
         return 1;
     }
 }
-#include <ctype.h>
+
 int main (int argc, char const *argv[])
 {
     if (has_config_file()) {
