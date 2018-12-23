@@ -60,6 +60,22 @@ int process_command (char * cmdargs[])
         char* dir = *cmdargs[1] != '\0' ? cmdargs[1] : ".";
         if (ls (dir) == 1) return 1;
     }
+    else if (strncmp(cmdargs[0], "mkdir", 5) == 0) {
+        int exec;
+        int pid = fork();
+        if (pid == 0) {
+            if (strncmp(cmdargs[1], "-p", 2) == 0) {
+                exec = execlp("mkdir", cmdargs[0], cmdargs[1], cmdargs[2], NULL);
+            }
+            else {
+                exec = execlp("mkdir", cmdargs[0], cmdargs[1], NULL);
+            }
+            if(exec == -1) {
+                perror ("Error mkdir");
+                return 1;
+            }
+        }
+    }
     else {
         fprintf(stderr, "Unknown command\n");
         return 1;
