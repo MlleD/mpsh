@@ -78,15 +78,27 @@ int main (int argc, char const *argv[])
     char input[MAX_ARGS_LENGTH];
     char* cmd_args[MAX_ARGS]; 
     for (int i = 0; i < MAX_ARGS;i++) cmd_args[i] = malloc(8);
+    int return_val = 0;
+    int exit_val;
     while (1) {
         fgets(input, MAX_ARGS_LENGTH, stdin);
         sscanf(input, "%s %s %s %s", cmd_args[0], cmd_args[1], cmd_args[2], cmd_args[3]);
-        if (process_command(cmd_args) != 0) break;
+        //si commande "exit", sortie de la boucle while
+        if (strncmp(cmd_args[0], "exit", 4) == 0) {
+            if (*cmd_args[1] != '\0') {
+                exit_val = atoi(cmd_args[1]);
+            }
+            else {
+                exit_val = return_val;
+            }
+            break;
+        }
+        return_val = process_command(cmd_args);
         // flush cmd_args
         for (int i = 0; i < MAX_ARGS; i++) {
             *cmd_args[i] = '\0';
         }
     }
     for (int i = 0; i < MAX_ARGS; i++) free(cmd_args[i]);
-    return 0;
+    return exit_val;
 }
