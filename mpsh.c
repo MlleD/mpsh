@@ -59,12 +59,12 @@ int process_command (char * cmdargs[])
     if (strncmp(cmdargs[0], "ls", 2) == 0) {
         char* dir = *cmdargs[1] != '\0' ? cmdargs[1] : ".";
         if (ls (dir) == 1) return 1;
-        else return 0;
     }
     else {
         fprintf(stderr, "Unknown command\n");
         return 1;
     }
+    return 0;
 }
 
 int main (int argc, char const *argv[])
@@ -81,8 +81,15 @@ int main (int argc, char const *argv[])
     while (1) {
         fgets(input, MAX_ARGS, stdin);
         sscanf(input, "%s %s %s %s", cmd_args[0], cmd_args[1], cmd_args[2], cmd_args[3]);
-        if (process_command(cmd_args) == 1) return 1;
+        if (process_command(cmd_args) != 0) break;
+        // flush stdin
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF) {}
+        // flush cmd_args
+        for (c = 0; c < MAX_ARGS; c++) {
+            *cmd_args[c] = '\0';
+        }
     }
-    for (int i = 0; i < MAX_ARGS;i++) free(cmd_args[i]);
+    for (int i = 0; i < MAX_ARGS; i++) free(cmd_args[i]);
     return 0;
 }
