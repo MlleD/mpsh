@@ -61,9 +61,9 @@ int process_command (char * cmdargs[])
         if (ls (dir) == 1) return 1;
     }
     else if (strncmp(cmdargs[0], "mkdir", 5) == 0) {
-        int exec;
         int pid = fork();
         if (pid == 0) {
+            int exec;
             if (strncmp(cmdargs[1], "-p", 2) == 0) {
                 exec = execlp("mkdir", cmdargs[0], cmdargs[1], cmdargs[2], NULL);
             }
@@ -72,6 +72,16 @@ int process_command (char * cmdargs[])
             }
             if(exec == -1) {
                 perror ("Error mkdir");
+                return 1;
+            }
+        }
+    }
+    else if (strncmp(cmdargs[0], "cat", 3) == 0) {
+        int pid = fork();
+        if (pid == 0) {
+            int exec = execlp("cat", cmdargs[0], cmdargs[1], NULL);
+            if(exec == -1) {
+                perror ("Error cat");
                 return 1;
             }
         }
