@@ -75,19 +75,16 @@ int main (int argc, char const *argv[])
     else {
         printf("Le fichier de config n'existe pas.\n");
     }
-    char input[MAX_ARGS];
+    char input[MAX_ARGS_LENGTH];
     char* cmd_args[MAX_ARGS]; 
     for (int i = 0; i < MAX_ARGS;i++) cmd_args[i] = malloc(8);
     while (1) {
-        fgets(input, MAX_ARGS, stdin);
+        fgets(input, MAX_ARGS_LENGTH, stdin);
         sscanf(input, "%s %s %s %s", cmd_args[0], cmd_args[1], cmd_args[2], cmd_args[3]);
         if (process_command(cmd_args) != 0) break;
-        // flush stdin
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF) {}
         // flush cmd_args
-        for (c = 0; c < MAX_ARGS; c++) {
-            *cmd_args[c] = '\0';
+        for (int i = 0; i < MAX_ARGS; i++) {
+            *cmd_args[i] = '\0';
         }
     }
     for (int i = 0; i < MAX_ARGS; i++) free(cmd_args[i]);
