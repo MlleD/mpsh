@@ -5,6 +5,8 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <errno.h>
+#include "var.h"
+#include "varutils.h"
 
 #define MAX_ARGS_LENGTH 32768
 #define MAX_ARGS 10
@@ -88,9 +90,39 @@ int process_command (char * cmdargs[])
             }
         }
     }
+    else if (strncmp(cmdargs[0], "echo", 4) == 0) {
+        if (*cmdargs[1] == '$') {
+            int len = strlen(cmdargs[1]) - 1; // ne pas compter le $ à la position 0
+            char* nameV = calloc(len + 1, 1);
+            strncpy(nameV, cmdargs[1] + 1, len);
+            char* valueV = get_value_of_var(nameV);
+            if (valueV != NULL) {
+                printf("%s", valueV);
+            }
+            printf("\n");
+            free(nameV);
+        }
+        else {
+            fprintf(stderr, "Unknown command\n");
+            return 1;
+        }
+    }
     else {
-        fprintf(stderr, "Unknown command\n");
-        return 1;
+        int posEqual = index_equal_in_varaffect(cmdargs[0]);
+        if (posEqual != -1) {
+            char* name = NULL, *value = NULL;
+            parse_variable(cmdargs[0], &name, &value);
+            if (find_variable(name)) {
+                change_variable_value(name, value);
+            }
+            else {
+                add_variable(name, value);
+            }
+        }
+        else {
+            fprintf(stderr, "Unknown command\n");
+            return 1;
+        }
     }
     return 0;
 }
@@ -112,6 +144,7 @@ int main (int argc, char const *argv[])
     }
     int return_val = 0;
     int exit_val;
+    init_variables_array();
 
     while (1) {
         fgets(input, MAX_ARGS_LENGTH, stdin);
@@ -133,5 +166,6 @@ int main (int argc, char const *argv[])
         }
     }
     for (int i = 0; i < MAX_ARGS; i++) free(cmd_args[i]);
+    free_var_array();
     return exit_val;
 }
