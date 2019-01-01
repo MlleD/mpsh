@@ -5,11 +5,11 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <errno.h>
-#include <ctype.h>
 
-#define MAX_ARGS_LENGTH 2097152
+#define MAX_ARGS_LENGTH 32768
 #define MAX_ARGS 10
 #define MAX_LINE_LENGTH 100
+#define MAX_VARIABLES 100
 
 int has_config_file ()
 {
@@ -26,6 +26,7 @@ int has_config_file ()
     /* Si config vaut NULL, c'est que le fichier n'existe pas. Sinon, il existe */
     return (config != NULL);
 }
+
 
 int ls (char *path)
 {
@@ -51,6 +52,7 @@ int ls (char *path)
         }
     }
     printf("\n");
+    free(dir);
     return 0;
 }
 
@@ -101,11 +103,16 @@ int main (int argc, char const *argv[])
     else {
         printf("Le fichier de config n'existe pas.\n");
     }
+    
     char input[MAX_ARGS_LENGTH];
     char* cmd_args[MAX_ARGS]; 
-    for (int i = 0; i < MAX_ARGS;i++) cmd_args[i] = malloc(8);
+    for (int i = 0; i < MAX_ARGS; i++) {
+        cmd_args[i] = malloc(MAX_ARGS_LENGTH);
+        *cmd_args[i] = '\0';
+    }
     int return_val = 0;
     int exit_val;
+
     while (1) {
         fgets(input, MAX_ARGS_LENGTH, stdin);
         sscanf(input, "%s %s %s %s", cmd_args[0], cmd_args[1], cmd_args[2], cmd_args[3]);
