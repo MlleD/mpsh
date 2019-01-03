@@ -17,7 +17,7 @@ void init_variables_array () {
  * */
 int double_array_size ()
 {
-    variable_t** new = realloc(variables, 2 * capacity);
+    variable_t** new = realloc(variables, 2 * capacity * sizeof(variable_t*));
     if (new == NULL) { 
         perror("Error when doubling variables arraysize: ");
         return 0;
@@ -30,8 +30,8 @@ int double_array_size ()
 int add_variable (char* name, char* value)
 {
     if (numberVariables == capacity) {
-        if (double_array_size(2 * capacity) == 1) {
-            return 1;
+        if (double_array_size(2 * capacity) == 0) {
+            return 0;
         }
     }
     variable_t* var = malloc(sizeof(*var));
@@ -77,12 +77,12 @@ int delete_variable (char* name) {
         fprintf(stderr, "Variable not found\n");
         return 0;
     }
-    free (variables[pos]);
+    free_var(variables[pos]);
     if (numberVariables > 1) {
         /* Subtitution entre la variable à la position numberVariables
          * et la position de name pour combler le "trou" */
-        variables[pos] = variables[numberVariables];
-        variables[numberVariables] = NULL;
+        variables[pos] = variables[numberVariables - 1];
+        variables[numberVariables - 1] = NULL;
     }
     numberVariables--;
     return 1;
@@ -97,11 +97,17 @@ char* get_value_of_var (char* name)
     return (variables[pos])->value;
 }
 
-void free_var_array () {
+void free_var (variable_t* var)
+{
+    free(var->name);
+    free(var->value);
+    free(var);
+}
+
+void free_var_array ()
+{
     for (int i = 0; i < numberVariables; i++) {
-        free(variables[i]->name);
-        free(variables[i]->value);
-        free(variables[i]);
+        free_var(variables[i]);
     }
     free(variables);
 }

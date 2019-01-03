@@ -1,12 +1,13 @@
 #include "var.h"
 #include <assert.h>
-
+#include <stdio.h>
 int main(int argc, char const *argv[])
 {
     init_variables_array();
     char* v1 = "myVar1";
     assert(!find_variable(v1));
     add_variable(v1, "123");
+    add_variable("var2", "mot");
     assert(find_variable(v1));
     assert(strncmp(get_value_of_var(v1), "123", 3) == 0);
     change_variable_value(v1, "456");

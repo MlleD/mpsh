@@ -20,9 +20,9 @@ void parse_variable (char* varaffect, char** name, char** value) {
     if (posEqual == -1) {
         return;
     }
-    *name = malloc (posEqual + 1);
+    *name = calloc (posEqual + 1, 1);
     int sizeValue = strlen(varaffect) - posEqual - 1;
-    *value = malloc (sizeValue + 1);
+    *value = calloc (sizeValue + 1, 1);
     strncpy(*name, varaffect, posEqual);
     strncpy(*value, varaffect + posEqual + 1, sizeValue + 1);
 }

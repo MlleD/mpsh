@@ -56,3 +56,8 @@ char* get_value_of_var (char* name);
  * Libère la mémoire associée au tableau de variables
  * */
 void free_var_array ();
+
+/* *
+ * Libère la mémoire associée à une variable
+ * */
+void free_var (variable_t* var);
