@@ -96,6 +96,24 @@ int del (char* cmdargs[])
         return delete_variable(cmdargs[1]);
     }
 }
+
+int cd (char* cmdargs[])
+{
+    if (*cmdargs[1] == '\0') {
+        chdir(getenv("HOME"));
+    }
+    else {
+        DIR* dir = opendir(cmdargs[1]);
+        if (dir == NULL) {
+            perror("Error cd");
+            return 1;
+        }
+        free(dir);
+        chdir(cmdargs[1]);
+    }
+    return 0;
+}
+
 int process_command (char * cmdargs[])
 {
     if (strncmp(cmdargs[0], "ls", 2) == 0) {
@@ -113,6 +131,9 @@ int process_command (char * cmdargs[])
     }
     else if (strncmp(cmdargs[0], "del", 4) == 0) {
         return del(cmdargs);
+    }
+    else if (strncmp(cmdargs[0], "cd", 2) == 0) {
+        return cd(cmdargs);
     }
     else {
         int posEqual = index_equal_in_varaffect(cmdargs[0]);
