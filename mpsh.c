@@ -107,6 +107,19 @@ int process_command (char * cmdargs[])
             return 1;
         }
     }
+    else if (strncmp(cmdargs[0], "del", 4) == 0) {
+        if (*cmdargs[1] == '\0') {
+            fprintf(stderr, "Error del: missing parameter\n");
+            return 1;
+        }
+        else if (!find_variable(cmdargs[1])) {
+            fprintf(stderr, "Error del: unknown variable\n");
+            return 1;
+        }
+        else {
+            delete_variable(cmdargs[1]);
+        }
+    }
     else {
         int posEqual = index_equal_in_varaffect(cmdargs[0]);
         if (posEqual != -1) {
