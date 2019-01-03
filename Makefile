@@ -11,5 +11,7 @@ varutils.o : varutils.c
 mpsh.o : mpsh.c
 commands.o : commands.c
 mpsh : $(OBJS)
+testvar : testvar.c var.o
+testvarutils : testvarutils.c varutils.o
 cleanall:
 	rm -rf *~ *.o $(ALL)
