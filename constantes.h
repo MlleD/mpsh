@@ -1,0 +1,4 @@
+#define MAX_ARGS_LENGTH 32768
+#define MAX_ARGS 10
+#define MAX_LINE_LENGTH 100
+#define MAX_VARIABLES 100
