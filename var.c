@@ -1,4 +1,7 @@
+#ifndef H_VAR
+#define H_VAR
 #include "var.h"
+#endif
 
 // Nombre de variables dans le tableau de variables
 int numberVariables = 0;
@@ -76,6 +79,9 @@ int change_variable_value (char* name, char* newvalue)
 }
 
 int delete_variable (char* name) {
+    if (is_special_var(name)) {
+        return 0;
+    }
     int pos = find_index_variable(name);
     if (pos == -1) {
         fprintf(stderr, "Variable not found\n");

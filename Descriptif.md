@@ -10,6 +10,7 @@ Si aucun répertoire n'est mentionné, le répertoire par defaut est HOME.
 
 ##del var
 Supprime la variable var.
+N'affecte pas la variable '?'
 
 ##echo $var
 Affiche la valeur de la variable var

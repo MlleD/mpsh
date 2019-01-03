@@ -3,6 +3,11 @@
 #include <string.h>
 #include "commands.h"
 
+#ifndef H_SPECIALVAR
+#define H_SPECIALVAR
+#include "specialvar.h"
+#endif
+
 int has_config_file ()
 {
     /* Construction du chemin absolu du fichier de configuration */
@@ -18,7 +23,6 @@ int has_config_file ()
     /* Si config vaut NULL, c'est que le fichier n'existe pas. Sinon, il existe */
     return (config != NULL);
 }
-
 
 int main (int argc, char const *argv[])
 {
@@ -38,6 +42,7 @@ int main (int argc, char const *argv[])
     int return_val = 0;
     int exit_val;
     init_variables_array();
+    add_interrogation();
 
     while (1) {
         fgets(input, MAX_ARGS_LENGTH, stdin);
@@ -53,6 +58,8 @@ int main (int argc, char const *argv[])
             break;
         }
         return_val = process_command(cmd_args);
+        change_interrogation_value(return_val);
+
         // flush cmd_args
         for (int i = 0; i < MAX_ARGS; i++) {
             *cmd_args[i] = '\0';

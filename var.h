@@ -2,6 +2,11 @@
 #include <string.h>
 #include <stdio.h>
 
+#ifndef H_SPECIALVAR
+#define H_SPECIALVAR
+#include "specialvar.h"
+#endif
+
 typedef struct variable {
     char* name;
     char* value;
