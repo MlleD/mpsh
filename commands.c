@@ -5,7 +5,7 @@ int ls (char *path)
     DIR* dir = opendir(path);
     if (dir == NULL) {
         perror("Error ls");
-        return 1;
+        return errno;
     }
     struct dirent* direntry;
     size_t current_line_length = 0;
@@ -41,7 +41,7 @@ int mkdir (char* cmdargs[])
         }
         if (exec == -1) {
             perror("Error mkdir");
-            return 1;
+            return errno;
         }
     }
     return 0;
@@ -54,7 +54,7 @@ int cat (char* cmdargs[])
         int exec = execlp("cat", cmdargs[0], cmdargs[1], NULL);
         if (exec == -1) {
             perror("Error cat");
-            return 1;
+            return errno;
         }
     }
     return 0;
@@ -106,7 +106,7 @@ int cd (char* cmdargs[])
         DIR* dir = opendir(cmdargs[1]);
         if (dir == NULL) {
             perror("Error cd");
-            return 1;
+            return errno;
         }
         free(dir);
         chdir(cmdargs[1]);

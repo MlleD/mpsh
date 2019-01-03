@@ -7,5 +7,6 @@
 #include "var.h"
 #endif
 #include "constantes.h"
+#include <errno.h>
 
 int process_command (char * cmdargs[]);
