@@ -9,6 +9,7 @@ int capacity = 1;
 
 void init_variables_array () {
     variables = malloc(sizeof(*variables));
+    variables[0]= NULL;
 }
 
 /* * 
@@ -48,6 +49,9 @@ int add_variable (char* name, char* value)
 
 int find_index_variable (char* name)
 {
+    if (name == NULL) {
+        return -1;
+    }
     int pos = numberVariables - 1;
     while (pos >= 0 && (strncmp(name, (*(variables + pos))->name, strlen(name)) != 0)) {
         pos--;
@@ -99,9 +103,13 @@ char* get_value_of_var (char* name)
 
 void free_var (variable_t* var)
 {
+    if (var == NULL) {
+        return;
+    }
     free(var->name);
     free(var->value);
     free(var);
+    var = NULL;
 }
 
 void free_var_array ()
