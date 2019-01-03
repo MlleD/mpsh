@@ -48,7 +48,7 @@ int main (int argc, char const *argv[])
         fgets(input, MAX_ARGS_LENGTH, stdin);
         sscanf(input, "%s %s %s %s", cmd_args[0], cmd_args[1], cmd_args[2], cmd_args[3]);
         //si commande "exit", sortie de la boucle while
-        if (strncmp(cmd_args[0], "exit", 4) == 0) {
+        if (strcmp(cmd_args[0], "exit") == 0) {
             if (*cmd_args[1] != '\0') {
                 exit_val = atoi(cmd_args[1]);
             }

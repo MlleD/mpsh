@@ -116,23 +116,23 @@ int cd (char* cmdargs[])
 
 int process_command (char * cmdargs[])
 {
-    if (strncmp(cmdargs[0], "ls", 2) == 0) {
+    if (strcmp(cmdargs[0], "ls") == 0) {
         char* dir = *cmdargs[1] != '\0' ? cmdargs[1] : ".";
         return ls (dir);
     }
-    else if (strncmp(cmdargs[0], "mkdir", 5) == 0) {
+    else if (strcmp(cmdargs[0], "mkdir") == 0) {
         return mkdir(cmdargs);
     }
-    else if (strncmp(cmdargs[0], "cat", 3) == 0) {
+    else if (strcmp(cmdargs[0], "cat") == 0) {
         return cat(cmdargs);
     }
-    else if (strncmp(cmdargs[0], "echo", 4) == 0) {
+    else if (strcmp(cmdargs[0], "echo") == 0) {
         return echo(cmdargs);
     }
-    else if (strncmp(cmdargs[0], "del", 4) == 0) {
+    else if (strcmp(cmdargs[0], "del") == 0) {
         return del(cmdargs);
     }
-    else if (strncmp(cmdargs[0], "cd", 2) == 0) {
+    else if (strcmp(cmdargs[0], "cd") == 0) {
         return cd(cmdargs);
     }
     else {
