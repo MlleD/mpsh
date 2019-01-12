@@ -23,3 +23,6 @@ Liste les entrées non cachées (. au debut du nom de l'entrée) du répertoire 
 
 ##mkdir [-p] ref
 Crée un nouveau répertoire dans le rép courant ou le chemin donné après l'option -p
+
+##pwd
+Affiche la référence absolue du répertoire courant

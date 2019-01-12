@@ -114,6 +114,23 @@ int cd (char* cmdargs[])
     return 0;
 }
 
+int pwd(char* cmdargs[])
+{
+    char* wd = malloc(MAX_PATH_LENGTH);
+    if (wd == NULL) {
+        perror ("Error pwd");
+        return errno;
+    }
+    char *res = getcwd(wd, MAX_PATH_LENGTH);
+    if (res == NULL) {
+        perror ("Error pwd");
+        return errno;
+    }
+    printf("%s\n", wd);
+    free(wd);
+    return 0;
+}
+
 int process_command (char * cmdargs[])
 {
     if (strcmp(cmdargs[0], "ls") == 0) {
@@ -134,6 +151,9 @@ int process_command (char * cmdargs[])
     }
     else if (strcmp(cmdargs[0], "cd") == 0) {
         return cd(cmdargs);
+    }
+    else if (strcmp(cmdargs[0], "pwd") == 0) {
+        return pwd(cmdargs);
     }
     else {
         int posEqual = index_equal_in_varaffect(cmdargs[0]);
